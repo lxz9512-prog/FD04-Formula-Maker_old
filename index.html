@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head><script>
+(function () {
+  if (window.process) return;
+  var noop = function () {};
+  window.process = {
+    env: {"NODE_ENV":"production","APP_FLAGS":{"customToaster":true,"supportBusinessUser":true,"supportScrollReveal":true,"supportTiptapAndStreamdown":true}},
+    argv: [],
+    platform: 'browser',
+    version: '',
+    browser: true,
+    nextTick: function (fn) { Promise.resolve().then(fn); },
+    emit: noop,
+    on: noop,
+    once: noop,
+    off: noop,
+    addListener: noop,
+    removeListener: noop,
+    listeners: function () { return []; },
+    cwd: function () { return '/'; },
+    toString: function () { return '[object process]'; },
+  };
+})();
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/FD04-Formula-Maker/favicon.svg">
+  <title>FD06 智能调奶器</title>
+  <script>
+    window.__platform__ = { showBadge: false };
+  </script>
+  <script type="module" crossorigin src="/FD04-Formula-Maker/assets/index-CF-dIHhF.js"></script>
+  <link rel="stylesheet" crossorigin href="/FD04-Formula-Maker/assets/index-DUztwB6x.css">
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
