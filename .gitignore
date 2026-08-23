@@ -67,3 +67,6 @@ pnpm-lock.yaml
 # Agent files
 .agent/
 .npm_cache
+
+# GitHub Pages static build output (deployed via gh-pages branch)
+dist-pages/

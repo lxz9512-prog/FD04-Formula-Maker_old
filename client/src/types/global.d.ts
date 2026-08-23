@@ -1,5 +1,9 @@
 declare module '*.css';
 
+// 纯静态部署开关：由 vite.preview.config.ts 的 define 注入。
+// 妙搭平台构建不注入，`typeof __LOCAL_PREVIEW__ !== 'undefined'` 为 false。
+declare const __LOCAL_PREVIEW__: boolean;
+
 // Type declarations for importing static assets
 declare module '*.png' {
   const value: string;
