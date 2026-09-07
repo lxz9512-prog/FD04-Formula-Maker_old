@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import IPhoneFrame from '@client/src/components/IPhoneFrame';
 import { useTranslation } from '@client/src/hooks/useTranslation';
 import { Image } from '@client/src/components/ui/image';
@@ -10,17 +11,23 @@ import {
   formatVolumeFromMl,
   useVolumeUnit,
 } from '@client/src/contexts/VolumeUnitContext';
+import { formatRelativeTime } from '@client/src/utils/formatRelativeTime';
 
 const DEVICE_IMAGE_URL = deviceImage;
 
+// Demo 用：最近一次调奶时间（距今 2 小时 15 分钟前），展示「h m」格式
+const LAST_FORMULA_TIME = dayjs().subtract(2, 'hour').subtract(15, 'minute');
+
 const DeviceList: React.FC = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const { unit } = useVolumeUnit();
 
   const handleDeviceClick = () => {
     navigate('/device');
   };
+
+  const lastFormulaText = formatRelativeTime(LAST_FORMULA_TIME, language);
 
   return (
     <>
@@ -174,7 +181,7 @@ const DeviceList: React.FC = () => {
                 </div>
                 <div className="mt-1.5 flex items-center gap-2">
                   <span className="text-[12px]" style={{ color: '#c4a882' }}>
-                    Today 08:30
+                    {lastFormulaText}
                   </span>
                   <span className="text-[12px]" style={{ color: '#c4a882' }}>
                     ·

@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   CheckCircle,
   Sun,
+  Clock,
 } from 'lucide-react';
 
 interface PageItem {
@@ -255,7 +256,20 @@ const DEVICE_LIST_INTERACTION_SECTIONS: InteractionSection[] = [
     connector: 'device-list-card',
     items: [
       '沿用原子化的能力和状态',
-      '差异点：空闲状态下（在线，但未工作），展示最近一次调奶的记录时间和调奶量',
+      '差异点：空闲状态下（在线，但未工作），展示最近一次调奶时间和调奶量',
+    ],
+  },
+  {
+    title: '调奶时间 · 显示格式',
+    icon: <Clock className="h-4 w-4" />,
+    color: '#7A3D17',
+    connector: 'device-list-card-time',
+    items: [
+      '展示距上次调奶的时长，按区间选用不同格式',
+      'x < 60min：n 分钟前',
+      '60min ≤ x < 24h：n 小时 m 分钟前（m = 0 时省略分钟）',
+      '24h ≤ x ≤ 3天：n 天前',
+      'x > 3天：同年显示「月-日」（如 03-12），跨年显示「年-月-日」（如 2025-10-01）',
     ],
   },
 ];
