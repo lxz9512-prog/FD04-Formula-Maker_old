@@ -140,6 +140,7 @@ const DeviceList: React.FC = () => {
             <motion.div
               whileTap={{ scale: 0.98 }}
               onClick={handleDeviceClick}
+              data-connector="device-list-card"
               className="flex cursor-pointer items-center gap-4 rounded-[20px] px-4 py-4"
               style={{
                 background: '#fff6e0',

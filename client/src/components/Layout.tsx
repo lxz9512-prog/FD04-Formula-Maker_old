@@ -247,6 +247,19 @@ const DEVICE_INTERACTION_SECTIONS: InteractionSection[] = [
   },
 ];
 
+const DEVICE_LIST_INTERACTION_SECTIONS: InteractionSection[] = [
+  {
+    title: '设备卡片 · 能力与状态',
+    icon: <List className="h-4 w-4" />,
+    color: '#7A3D17',
+    connector: 'device-list-card',
+    items: [
+      '沿用原子化的能力和状态',
+      '差异点：空闲状态下（在线，但未工作），展示最近一次调奶的记录时间和调奶量',
+    ],
+  },
+];
+
 type FormulaEditMode = 'recognition' | 'manual' | 'edit';
 
 const FORMULA_EDIT_FIELD_RULES = [
@@ -461,14 +474,19 @@ const Layout = () => {
   const currentNavPath = getCurrentNavPath(location.pathname, location.search);
   const svgRef = useRef<SVGSVGElement>(null);
   const isDevicePage = location.pathname === '/device';
+  const isDeviceListPage = location.pathname === '/';
+  // 设备列表页与设备控制页支持「交互说明 → 页面元素」连线
+  const showConnectorLines = isDevicePage || isDeviceListPage;
   const formulaEditMode = currentNavPath.startsWith('/formula-edit?mode=')
     ? (currentNavPath.split('=')[1] as FormulaEditMode)
     : null;
   const interactionSections = isDevicePage
     ? DEVICE_INTERACTION_SECTIONS
-    : formulaEditMode
-      ? FORMULA_EDIT_INTERACTION_SECTIONS[formulaEditMode]
-      : [];
+    : isDeviceListPage
+      ? DEVICE_LIST_INTERACTION_SECTIONS
+      : formulaEditMode
+        ? FORMULA_EDIT_INTERACTION_SECTIONS[formulaEditMode]
+        : [];
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -497,7 +515,7 @@ const Layout = () => {
   };
 
   const calculateSvgLines = () => {
-    if (!isInfoPanelOpen || !isDevicePage || !showInteractionLines) {
+    if (!isInfoPanelOpen || !showConnectorLines || !showInteractionLines) {
       setSvgLines([]);
       return;
     }
@@ -534,7 +552,7 @@ const Layout = () => {
       const endX = panelRect.left - svgRect.left;
       const endY = panelRect.top + panelRect.height / 2 - svgRect.top;
 
-      const section = DEVICE_INTERACTION_SECTIONS.find(
+      const section = interactionSections.find(
         (s: InteractionSection) => s.connector === connectorId,
       );
 
@@ -551,13 +569,13 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    if (!isDevicePage) {
+    if (!showConnectorLines) {
       setSvgLines([]);
       return;
     }
     const timer = setTimeout(calculateSvgLines, 350);
     return () => clearTimeout(timer);
-  }, [isInfoPanelOpen, openSections, isDevicePage, showInteractionLines]);
+  }, [isInfoPanelOpen, openSections, showConnectorLines, showInteractionLines]);
 
   useEffect(() => {
     const handleResize = () => calculateSvgLines();
@@ -712,7 +730,7 @@ const Layout = () => {
       </div>
 
       {/* SVG Connector Overlay */}
-      {isInfoPanelOpen && isDevicePage && showInteractionLines && (
+      {isInfoPanelOpen && showConnectorLines && showInteractionLines && (
         <svg
           ref={svgRef}
           className="pointer-events-none fixed inset-0 z-50 hidden h-screen w-screen xl:block"
