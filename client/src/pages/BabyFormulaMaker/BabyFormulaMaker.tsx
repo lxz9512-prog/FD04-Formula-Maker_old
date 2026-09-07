@@ -155,6 +155,10 @@ const BabyFormulaMaker: React.FC<BabyFormulaMakerProps> = ({
   const [waterCalibrationDismissed, setWaterCalibrationDismissed] =
     useState(false);
   const [tubeCleanDismissed, setTubeCleanDismissed] = useState(false);
+  const [powderCleanReminderDismissed, setPowderCleanReminderDismissed] =
+    useState(false);
+  const showPowderCleanReminder =
+    powderCleanReminder && !powderCleanReminderDismissed;
   const showWaterCalibrationReminder =
     waterCalibrationReminderProp && !waterCalibrationDismissed;
   const showTubeCleanReminder = tubeCleanReminderProp && !tubeCleanDismissed;
@@ -630,8 +634,8 @@ const BabyFormulaMaker: React.FC<BabyFormulaMakerProps> = ({
             </div>
           )}
 
-        {/* Mixing Chamber Clean Reminder Banner - warning, non-blocking */}
-        {powderCleanReminder && (
+        {/* Mixing Chamber Clean Reminder Banner - warning, non-blocking, dismissable */}
+        {showPowderCleanReminder && (
           <div
             className="absolute z-20 left-5 right-5 top-[64px] flex items-center gap-2 rounded-[14px] px-3 py-2.5"
             style={{
@@ -646,11 +650,22 @@ const BabyFormulaMaker: React.FC<BabyFormulaMakerProps> = ({
               <AlertTriangle className="h-4 w-4" style={{ color: '#D97706' }} />
             </div>
             <span
-              className="text-[12px] font-medium leading-snug"
+              className="flex-1 text-[12px] font-medium leading-snug"
               style={{ color: '#92400E' }}
             >
               {t('maker.cleanReminder')}
             </span>
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setPowderCleanReminderDismissed(true);
+              }}
+              className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+              style={{ background: 'rgba(217, 119, 6, 0.1)' }}
+            >
+              <X className="h-3 w-3" style={{ color: '#D97706' }} />
+            </motion.button>
           </div>
         )}
 
